@@ -1,0 +1,20 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="barrag">
+    <ion-title >BIENVENIDO: {{usuario}} </ion-title>
+<!-- DONDE SE VA A POSICIONAR EL BOTON  -->  
+<ion-buttons slot="end">
+    <ion-button (click)="fav()" >
+      <ion-icon  [color]="color" slot="icon-only" name="heart" ></ion-icon>
+    </ion-button>
+</ion-buttons>
+<!-- <ion-back-button slot="start" defaultHref="/" >VOLVER</ion-back-button> -->
+
+</ion-toolbar>
+</ion-header>
+
+
+
+<ion-content [fullscreen]="true">
+  <ion-button (click)="logout()"  expand="block" class="boton fondo barrag">LOGOUT</ion-button>  
+</ion-content>
+

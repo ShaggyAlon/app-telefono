@@ -1,0 +1,46 @@
+<!-- <ion-header [translucent]="true">
+  <ion-toolbar color="danger">
+    <ion-title>Nueva Persona</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content [fullscreen]="true" class="fondo2">
+  <div class="centrado">
+          <div class="ion-text-center">
+            <ion-label class="titulo">  REGISTRAR </ion-label>
+          </div>
+ 
+    <ion-item class="inputg ion-margin-top">
+      <ion-input [(ngModel)]="mdl_nombre" label="Nombre" labelPlacement="floating"></ion-input>
+    </ion-item>
+    <ion-item class="inputg ion-margin-top">
+      <ion-input [(ngModel)]="mdl_apellido" label="Apellido" labelPlacement="floating"></ion-input>
+    </ion-item>
+    <ion-item class="inputg ion-margin-top">
+      <ion-input [(ngModel)]="mdl_telefono" label="telefono" labelPlacement="floating"></ion-input>
+    </ion-item>
+    <ion-item class="inputg ion-margin-top">
+      <ion-input [(ngModel)]="mdl_email" label="email" labelPlacement="floating"></ion-input>
+    </ion-item>
+    <ion-item class="inputg ion-margin-top">
+      <ion-input [(ngModel)]="mdl_contrasena" label="contraseña" labelPlacement="floating"></ion-input>
+    </ion-item>
+    <br>
+    <ion-button class="boton fondo barrag" expand="block" (click)="almacenarPersona()"> Registrar
+    </ion-button>
+    
+
+    <!-- <ion-item color="primary" color="warning" class="ion-margin-top">
+      <ion-label> CANTIDAD DE PERSONAS: {{ cantidad }}</ion-label>
+    </ion-item> -->
+
+    <ion-button class="boton fondo barrag" expand="block" (click)="irListarPersonas()"> Listar Personas
+    </ion-button>
+    <br>
+    <ion-button class="boton fondo barrag" expand="block" (click)="volver()">volver
+    </ion-button>
+
+
+  </div>
+
+</ion-content>

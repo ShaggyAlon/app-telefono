@@ -16,7 +16,7 @@
 @import "@ionic/angular/css/normalize.css";
 @import "@ionic/angular/css/structure.css";
 @import "@ionic/angular/css/typography.css";
-@import "@ionic/angular/css/display.css";
+@import '@ionic/angular/css/display.css';
 
 /* Optional CSS utils that can be commented out */
 @import "@ionic/angular/css/padding.css";
@@ -24,3 +24,58 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+
+
+// ESTILO FONDO
+
+.fondog{
+    --background-color: antiquewhite;
+    --color:black;
+    background-color: black;
+
+
+}
+
+// ESTILO TOOLBAR
+.barrag{
+    --background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(58,212,26,1) 0%, rgba(50,212,58,1) 100%, rgba(0,212,255,1) 100%);
+    --color: rgb(0, 0, 0);
+    font-size: large;
+    text-align: center;
+}
+
+// ESTILO INPUTS
+.inputg{
+    border: solid 2px #29aa29;
+    border-radius: 5px;
+
+}
+
+// CENTRAR DIV
+.centrado{
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+}
+
+// DISEÑO BOTON
+.boton{
+    height: 55px;
+}
+
+
+
+
+// .fotter{
+//     --margin-right: 100px;
+//     max-width: 50%;
+//     margin-left: auto;
+//     margin-right: auto;
+// }
+
+// centrar  h1 
+.centrar{
+    text-align: center;
+}
+

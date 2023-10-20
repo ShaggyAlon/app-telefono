@@ -1,0 +1,34 @@
+.centrado {
+    max-width: 90%;
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.centrado2 {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.fondo2 {
+    --background: black;
+    --color: #FFFFFF;
+}
+
+.titulo {
+    max-width: 90%;
+    font-size: 40px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.boton {
+    height: 50px;
+}
+
+.item {
+
+    --background: #FFFFFF;
+    --color: #000000;
+}

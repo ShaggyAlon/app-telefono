@@ -1,0 +1,41 @@
+<!-- <ion-header [translucent]="true">
+  <ion-toolbar class="barrag">
+    <ion-title>LOGIN</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+<ion-content [fullscreen]="true" class="fondol">
+  <div class="centrado">
+    <ion-img src="../assets/img-vivo.png"></ion-img>
+    <br>
+    <ion-item class="inputg ion-margin-top">
+      <!-- [(ngModel)]  -->
+      <ion-input lines="none" [(ngModel)]="mdl_usuario" label="usuario" labelPlacement="floating"></ion-input>
+    </ion-item>
+    <br>
+    <ion-item class="inputg ion-margin-top">
+      <ion-input lines="none" [(ngModel)]="mdl_contra" label="contraseña" type="password"labelPlacement="floating"></ion-input>
+
+    </ion-item>
+    
+    <br>
+    <!-- BOTON DE INGRESO -->
+    <ion-button (click)="ingresar()  " expand="block" class="boton fondo barrag">INGRESAR</ion-button>
+    <ion-button (click)="registro()" expand="block" class="boton fondo barrag" >REGISTRO</ion-button>
+    <ion-button (click)="recuperar()" expand="block" class="boton fondo barrag">RECUPERAR CONTRASEÑA</ion-button>
+    <br>
+    <!-- <ion-label>Bienvenid@: {{mdl_usuario}}</ion-label> -->
+  </div>
+
+  <ion-card *ngFor="let x of lista_personas"class="inputg " >
+      <ion-card-content> USUARIO: {{x.NOMBRE}} {{x.APELLIDO}} </ion-card-content>
+      <ion-card-content>APELLIDO: {{x.APELLIDO}}///Contra: {{x.CONTRASENA}}</ion-card-content>
+  </ion-card>
+  <ion-alert 
+    [isOpen]="isAlertOpen" 
+    header="INFORMACION" 
+    [message]="mdl_message" 
+    [buttons]="alertButtons"
+    (didDismiss)="setOpen(false)">
+  </ion-alert>
+
+</ion-content>
