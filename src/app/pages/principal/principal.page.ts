@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
+import { Persona } from 'src/app/models/persona.model';
+import { DbService } from 'src/app/services/db.service';
 
 @Component({
   selector: 'app-principal',
@@ -14,8 +16,8 @@ export class PrincipalPage implements OnInit {
   contra: string = '';
   color: string = 'light';
 
-
-  constructor(private router: Router) {}
+  lista_personas: Persona[] = [];
+  constructor(private router: Router, private dbService: DbService) {}
 
   ngOnInit() {
 
@@ -25,6 +27,11 @@ export class PrincipalPage implements OnInit {
       this.usuario = parametros?.extras.state['user'];
       this.contra = parametros?.extras.state['pass'];
     }
+    this.dbService.obtenerTodasLasPersonas().then(data => {
+      for (let x = 0; x < data.length; x++) {
+        this.lista_personas.push(data[x]);
+      }
+    })
   }
 
   fav(){

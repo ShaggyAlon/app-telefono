@@ -39,37 +39,40 @@ export class LoginPage implements OnInit {
   }
 
   // BOTON NAVEGAR
-  ingresar(){
-    console.log("Entre click")
-
-    if (this.mdl_usuario == '' || this.mdl_contra == '' ) {
-      this.mdl_message = "Ingrese sus credenciales"
+  ingresar() {
+    console.log("Entre click");
+  
+    if (this.mdl_usuario === '' || this.mdl_contra === '') {
+      this.mdl_message = "Ingrese sus credenciales";
       this.isAlertOpen = true;
-    }else{
-      if (this.lista_usuarios.length > 0){
-        for(const usuario of this.lista_usuarios){
-          if(usuario.user == this.mdl_usuario && usuario.pass == this.mdl_contra){
-
-            let paramatros : NavigationExtras = {
-              replaceUrl: true,
-              state: {
-                lista_usuarios: this.lista_usuarios,
-                user: this.mdl_usuario,
-                pass: this.mdl_contra
-              }
+    } else {
+      // Llamada a la función que obtiene los datos de la base de datos
+      this.dbService.obtenerTodasLasPersonas().then(data => {
+        this.lista_personas = data; // Supongo que la función devuelve una lista de usuarios
+  
+        // Busca un usuario con las credenciales ingresadas
+        const usuarioEncontrado = this.lista_personas.find(usuario => usuario.NOMBRE === this.mdl_usuario && usuario.CONTRASENA === this.mdl_contra);
+  
+        if (usuarioEncontrado) {
+          // Credenciales válidas, navegar a la página principal
+          let paramatros: NavigationExtras = {
+            replaceUrl: true,
+            state: {
+              lista_usuarios: this.lista_usuarios,
+              user: this.mdl_usuario,
+              pass: this.mdl_contra
             }
-            this.router.navigate(['principal'], paramatros);
-          }else{
-            this.mdl_message = "Credenciales invalidas"
-            this.isAlertOpen = true;
           }
+          this.router.navigate(['principal'], paramatros);
+        } else {
+          // Credenciales inválidas
+          this.mdl_message = "Credenciales inválidas";
+          this.isAlertOpen = true;
         }
-      }else{
-        this.mdl_message = "Credenciales invalidas"
-        this.isAlertOpen = true;
-      }
+      });
     }
   }
+  
 
   /* METODO REGISTRO */
   registro() {

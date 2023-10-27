@@ -21,14 +21,14 @@
     <!-- BOTON DE INGRESO -->
     <ion-button (click)="ingresar()  " expand="block" class="boton fondo barrag">INGRESAR</ion-button>
     <ion-button (click)="registro()" expand="block" class="boton fondo barrag" >REGISTRO</ion-button>
-    <ion-button (click)="recuperar()" expand="block" class="boton fondo barrag">RECUPERAR CONTRASEÑA</ion-button>
+    <!-- <ion-button (click)="recuperar()" expand="block" class="boton fondo barrag">RECUPERAR CONTRASEÑA</ion-button> -->
     <br>
     <!-- <ion-label>Bienvenid@: {{mdl_usuario}}</ion-label> -->
   </div>
 
   <ion-card *ngFor="let x of lista_personas"class="inputg " >
-      <ion-card-content> USUARIO: {{x.NOMBRE}} {{x.APELLIDO}} </ion-card-content>
-      <ion-card-content>APELLIDO: {{x.APELLIDO}}///Contra: {{x.CONTRASENA}}</ion-card-content>
+      <ion-card-content> USUARIO: {{x.NOMBRE}}  </ion-card-content>
+      <ion-card-content>Contra: {{x.CONTRASENA}}</ion-card-content>
   </ion-card>
   <ion-alert 
     [isOpen]="isAlertOpen" 
