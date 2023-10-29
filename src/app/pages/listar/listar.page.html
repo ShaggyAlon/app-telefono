@@ -9,13 +9,12 @@
   <ion-card *ngFor="let x of lista_personas" >
     <ion-card-header>
       <ion-card-title> USUARIO: {{x.NOMBRE}} {{x.APELLIDO}} </ion-card-title>
-      <ion-card-title>APELLIDO: {{x.APELLIDO}}</ion-card-title>
+     
     </ion-card-header>
     
 
     <ion-card-content>
       Contra: {{x.CONTRASENA}} 
-      <ion-button expand="block" color="danger" > Eliminar Persona</ion-button>
     </ion-card-content>
   </ion-card>
 

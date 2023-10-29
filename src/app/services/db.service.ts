@@ -32,20 +32,7 @@ export class DbService {
       .catch(e => console.log('FSR: ' + JSON.stringify(e)));
   }
 
-  obtenerCantidadPersonas() {
-    return this.sqlite.create({
-      name: 'data.db',
-      location: 'default'
-    })
-      .then((db: SQLiteObject) => {
-        return db.executeSql('SELECT COUNT(NOMBRE) AS CANTIDAD FROM PERSONA', [])
-          .then((data) => {
-            return data.rows.item(0).CANTIDAD;
-          })
-          .catch(e => console.log('FSR: ' + JSON.stringify(e)));
-      })
-      .catch(e => console.log('FSR: ' + JSON.stringify(e)));
-  }
+
 
   obtenerTodasLasPersonas() {
     return this.sqlite.create({
@@ -72,7 +59,18 @@ export class DbService {
       });
   }
 
-
+  actualizarPersona(nombre: string, nuevaContrasena: string) {
+    this.sqlite.create({
+      name: 'data.db',
+      location: 'default'
+    })
+      .then((db: SQLiteObject) => {
+        db.executeSql('UPDATE PERSONA SET CONTRASENA = ? WHERE NOMBRE = ?', [nuevaContrasena, nombre])
+          .then(() => console.log('FSR: PERSONA ACTUALIZADA OK'))
+          .catch(e => console.log('FSR: ' + JSON.stringify(e)));
+      })
+      .catch(e => console.log('FSR: ' + JSON.stringify(e)));
+  }
   
 
 

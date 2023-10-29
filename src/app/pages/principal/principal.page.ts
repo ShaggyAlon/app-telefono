@@ -12,7 +12,8 @@ export class PrincipalPage implements OnInit {
 
   //VARIABLES
   usuario: string = '';
-  lista_usuarios: {user: string, apellido: string, telefono: number, pass: string}[] = [];
+  apellido: string = '';
+
   contra: string = '';
   color: string = 'light';
 
@@ -20,12 +21,16 @@ export class PrincipalPage implements OnInit {
   constructor(private router: Router, private dbService: DbService) {}
 
   ngOnInit() {
-
     let parametros = this.router.getCurrentNavigation();
-    if(parametros?.extras.state){
-      this.lista_usuarios = parametros?.extras.state['lista_usuarios'];
+    if (parametros?.extras.state) {
+      this.lista_personas = parametros?.extras.state['lista_personas'];
       this.usuario = parametros?.extras.state['user'];
+      this.apellido = parametros?.extras.state['apellidol'];
       this.contra = parametros?.extras.state['pass'];
+      // console.log([this.apellido])
+      // console.log([this.usuario]);
+      // console.log([this.contra]);
+      console.log([this.lista_personas])
     }
     this.dbService.obtenerTodasLasPersonas().then(data => {
       for (let x = 0; x < data.length; x++) {
@@ -42,9 +47,15 @@ export class PrincipalPage implements OnInit {
     let paramatros : NavigationExtras = {
       replaceUrl: true,
       state: {
-        lista_usuarios: this.lista_usuarios
+        user: this.usuario,
+        pass: this.contra,
+        apellidol: this.apellido
       }
     }
+    console.log([this.apellido]);
+      console.log([this.usuario]);
+      console.log([this.contra]);
+
     this.router.navigate(['login'], paramatros);
   }
 
