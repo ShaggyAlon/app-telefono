@@ -17,7 +17,7 @@
       <ion-input [(ngModel)]="mdl_apellido" label="Apellido" labelPlacement="floating"></ion-input>
     </ion-item>
     <ion-item class="inputg ion-margin-top">
-      <ion-input [(ngModel)]="mdl_telefono" label="telefono" labelPlacement="floating"></ion-input>
+      <ion-input [(ngModel)]="mdl_usuario" label="usuario" labelPlacement="floating"></ion-input>
     </ion-item>
     <ion-item class="inputg ion-margin-top">
       <ion-input [(ngModel)]="mdl_email" label="email" type="email" labelPlacement="floating"></ion-input>
@@ -34,19 +34,38 @@
       <ion-label> CANTIDAD DE PERSONAS: {{ cantidad }}</ion-label>
     </ion-item> -->
 
-    <ion-button class="boton fondo barrag" expand="block" (click)="irListarPersonas()"> Listar Personas
-    </ion-button>
+    <!-- <ion-button class="boton fondo barrag" expand="block" (click)="irListarPersonas()"> Listar Personas
+    </ion-button> -->
     <br>
     <ion-button class="boton fondo barrag" expand="block" (click)="volver()">volver
     </ion-button>
 
 
   </div>
-  <ion-alert 
-  [isOpen]="isAlertOpen" 
-  header="INFORMACION" 
-  [message]="mdl_message" 
+  <ion-alert
+  [isOpen]="isAlertOpen"
+  header="Información"
+  message="campos vacios"
   [buttons]="alertButtons"
-  (didDismiss)="setOpen(false)">
-</ion-alert>
+  (didDismiss)="setOpen(false)"
+  >
+  </ion-alert>
+
+  <ion-alert
+  [isOpen]="isAlertOpenDuplicado"
+  header="Información"
+  message="Nombre de usuario ya registrado"
+  [buttons]="alertButtons"
+  (didDismiss)="setOpen(false)"
+  >
+  </ion-alert>
+
+  <ion-alert
+  [isOpen]="isAlertOpenEmail"
+  header="Información"
+  message="Correo ya registrado"
+  [buttons]="alertButtons"
+  (didDismiss)="setOpen(false)"
+  >
+  </ion-alert>
 </ion-content>

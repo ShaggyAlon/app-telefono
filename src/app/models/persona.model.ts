@@ -1,14 +1,14 @@
 export class Persona {
     NOMBRE: string;
     APELLIDO: string;
-    TELEFONO: number;
+    USUARIO: string;
     EMAIL: string;
     CONTRASENA: string;
 
     constructor() {
         this.NOMBRE = '';
         this.APELLIDO = '';
-        this.TELEFONO = 0;
+        this.USUARIO = '';
         this.EMAIL = '';
         this.CONTRASENA = '';
     }

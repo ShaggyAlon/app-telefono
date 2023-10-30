@@ -3,6 +3,8 @@
     <ion-title>LOGIN</ion-title>
   </ion-toolbar>
 </ion-header> -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' http://192.168.1.173:8100/">
+
 <ion-content [fullscreen]="true" class="fondol">
   <div class="centrado">
     <ion-img src="../assets/img-vivo.png"></ion-img>
@@ -23,19 +25,30 @@
     <ion-button (click)="registro()" expand="block" class="boton fondo barrag" >REGISTRO</ion-button>
     <ion-button (click)="recuperar()" expand="block" class="boton fondo barrag">CAMBIAR CONTRASEÑA</ion-button>
     <br>
-    <!-- <ion-label>Bienvenid@: {{mdl_usuario}}</ion-label> -->
   </div>
 
   <ion-card *ngFor="let x of lista_personas"class="inputg " >
-      <ion-card-content> USUARIO: {{x.NOMBRE}}{{x.APELLIDO}}  </ion-card-content>
+      <ion-card-content> USUARIO: {{x.USUARIO}}  </ion-card-content>
       <ion-card-content>Contra: {{x.CONTRASENA}}</ion-card-content>
   </ion-card>
-  <ion-alert 
-    [isOpen]="isAlertOpen" 
-    header="INFORMACION" 
-    [message]="mdl_message" 
-    [buttons]="alertButtons"
-    (didDismiss)="setOpen(false)">
+
+
+  <ion-alert
+  [isOpen]="isAlertOpen"
+  header="Información"
+  message="campos vacios"
+  [buttons]="alertButtons"
+  (didDismiss)="setOpen(false)"
+  >
   </ion-alert>
+  <ion-alert
+  [isOpen]="isAlertOpenError"
+  header="Información"
+  message="campos erroneos"
+  [buttons]="alertButtons"
+  (didDismiss)="setOpen(false)"
+  >
+  </ion-alert>
+  
 
 </ion-content>

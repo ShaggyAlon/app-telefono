@@ -1,8 +1,13 @@
 import { state } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
+import { lastValueFrom } from 'rxjs';
 import { Persona } from 'src/app/models/persona.model';
+import { Sesion } from 'src/app/models/sesion.model';
+import { ApiService } from 'src/app/services/api.service';
 import { DbService } from 'src/app/services/db.service';
+import { SesionService } from 'src/app/services/sesion.service';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -19,111 +24,125 @@ export class LoginPage implements OnInit {
   usuario: string = '';
   contra: string = '';
   apellido: string = '';
-
-  // lista_usuarios: {user: string, apellido: string, telefono: number, pass: string}[] = [];
   // OBTENER LISTA DE MODELS
   lista_personas: Persona[] = [];
+
+
+  // RESPUESTA API
+  lista_respuesta: any[] = [];
+  //Lista para saber si la sesion esta activa
+  lista_sesion: any[] = [];
+  lista_activa: Sesion[] = [];
+  vigente: string = '';
+  // ALERTAS
   isAlertOpen = false;
+  isAlertOpenError = false;
   alertButtons = ['OK'];
 
 
-  constructor(private router: Router, private dbService: DbService) { }
+  constructor(private router: Router, private dbService: DbService, private sesionService: SesionService, private apiService: ApiService) { }
 
   ngOnInit() {
     this.dbService.obtenerTodasLasPersonas().then(data => {
       for (let x = 0; x < data.length; x++) {
         this.lista_personas.push(data[x]);
       }
-    })
-    let parametros = this.router.getCurrentNavigation();
-    if (parametros?.extras.state) {
-      this.lista_personas = parametros?.extras.state['lista_personas'];
-      this.usuario = parametros?.extras.state['user'];
-      this.apellido = parametros?.extras.state['apellidol'];
-      this.contra = parametros?.extras.state['pass'];
-      // console.log([this.apellido])
-      // console.log([this.usuario]);
-      // console.log([this.contra]);
-      console.log([this.lista_personas])
-    }
+      
+    });
+    this.sesionService.ObtenerSesion().then(data => {
+      for (let x = 0; x < data.length; x++) {
+        this.lista_sesion.push(data[x].USUARIO);
+      }
+    });
 
   }
+
 
   // BOTON NAVEGAR
-  ingresar() {
-    console.log("Entre click");
+  async ingresar() {
+    this.isAlertOpenError = false;
 
-    if (this.mdl_usuario === '' || this.mdl_contra === '') {
-      this.mdl_message = "Ingrese sus credenciales";
-      this.isAlertOpen = true;
-    } else {
-      // Llamada a la función que obtiene los datos de la base de datos
-      this.dbService.obtenerTodasLasPersonas().then(data => {
-        this.lista_personas = data;
+    let data = this.apiService.personaLogin(this.mdl_usuario, this.mdl_contra);
+    let respuesta = await lastValueFrom(data);
 
-        // Busca un usuario con las credenciales ingresadas
-        const usuarioEncontrado = this.lista_personas.find(usuario => usuario.NOMBRE === this.mdl_usuario
-          && usuario.CONTRASENA === this.mdl_contra);
+    let json = JSON.stringify(respuesta);
+    let jsonProcesado = JSON.parse(json);
 
-        if (usuarioEncontrado) {
-          // Credenciales válidas, navegar a la página principal
-          let paramatros: NavigationExtras = {
-            replaceUrl: true,
-            state: {
+    for (let x = 0; x < jsonProcesado["result"].length; x++) {
+      this.lista_respuesta.push(jsonProcesado["result"][x]);
 
-              user: this.mdl_usuario,
-              pass: this.mdl_contra,
-              apellidol: this.apellido
-              
+      if (this.mdl_usuario != '' && this.mdl_contra != '') {
+
+        this.dbService.personaValidar(this.mdl_usuario).then(data => {
+
+          this.usuario = data[3];
+          this.contra = data[4];
+
+          if (this.mdl_usuario == this.usuario && this.mdl_contra == this.contra
+
+            || this.lista_respuesta[x]["RESPUESTA"] == "LOGIN OK") {
+
+            if (this.lista_sesion.includes(this.mdl_usuario)) {
+              let parametros: NavigationExtras = {
+                state: {
+                  user: this.mdl_usuario
+                },
+                replaceUrl: true
+              }
+              this.vigente = '1'
+              this.sesionService.sesionActual(this.vigente, this.mdl_usuario);
+              this.router.navigate(['principal'], parametros);
+            } else {
+              let parametros: NavigationExtras = {
+                state: {
+                  user: this.mdl_usuario
+                },
+                replaceUrl: true
+              }
+              this.vigente = '1'
+              this.sesionService.nuevaSesion(this.vigente, this.mdl_usuario);
+              console.log(this.mdl_usuario);
+              this.router.navigate(['principal'], parametros);
+            }
+
+          }
+          else {
+            if (this.lista_respuesta[x]['RESPUESTA'] == "MALO SEÑOR" ||
+              this.mdl_usuario != this.usuario && this.mdl_contra != this.contra) {
+              this.isAlertOpenError = true;
             }
           }
-          console.log(this.apellido);
-          console.log(this.mdl_usuario);
-          this.router.navigate(['principal'], paramatros);
-        } else {
-          // Credenciales inválidas
-          this.mdl_message = "Credenciales inválidas";
-          this.isAlertOpen = true;
-        }
-      });
-    }
-  }
 
+        });
+
+      } else {
+        console.log('maldito else')
+        this.isAlertOpen = true;
+      }
+
+    }
+
+  }
+  
 
   /* METODO REGISTRO */
   registro() {
     let paramatros: NavigationExtras = {
-      replaceUrl: true,
-      state: {
-          user: this.usuario,
-          pass: this.contra,
-          apellidol: this.apellido
-        }
+      replaceUrl: true
     }
-    console.log([this.apellido]);
-    console.log([this.usuario]);
-    console.log([this.contra]);
-    this.router.navigate(['persona-crear'], paramatros)
+
+    this.router.navigate(['persona-crear'], paramatros);
   }
   /* RECUPERAR RECUPERAR CONTRASEÑA */
   recuperar() {
-    let paramatros : NavigationExtras = {
-      replaceUrl: true,
-      state: {
-        user: this.usuario,
-        pass: this.contra,
-        apellidol: this.apellido
-      }
+    let paramatros: NavigationExtras = {
+      replaceUrl: true
     }
-    console.log([this.apellido]);
-      console.log([this.usuario]);
-      console.log([this.contra]);
-  
-      this.router.navigate(['recuperar'], paramatros);
+    this.router.navigate(['recuperar'], paramatros);
   }
 
 
-  
+
 
   /* ALERTA */
   setOpen(isOpen: boolean) {
