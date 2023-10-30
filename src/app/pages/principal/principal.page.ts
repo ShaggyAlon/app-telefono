@@ -26,24 +26,23 @@ export class PrincipalPage implements OnInit {
     let parametros = this.router.getCurrentNavigation();
     if(parametros?.extras.state){
       this.usuario = parametros?.extras.state['user'];
+      this.apellido = parametros?.extras.state['apellido'];
     }
     this.dbService.personaValidar(this.usuario).then(data => {
       console.log('a lo maldito')
-      this.nombre =  data[0]; 
-      this.apellido = data [1];
+      this.nombre =  data[1]; 
     });
   }
 
-  fav(){
-    this.color =  this.color == 'light'?'danger':'light'
-  }
+
 
   logout(){
     let parametros: NavigationExtras = {
       replaceUrl: true
     }
-    this.vigente = '0'
-    this.sesionService.sesionActual(this.vigente,this.usuario)
+    console.log('hola soy la sesion cerrandose')
+    this.vigente = '1'
+    this.sesionService.sesionActual(this.usuario,this.vigente)
     this.router.navigate(['login'], parametros)
   }
 

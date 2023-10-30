@@ -12,7 +12,7 @@ export class SesionService {
       location: 'default'
     })
       .then((db: SQLiteObject) => {
-        db.executeSql('CREATE TABLE IF NOT EXISTS SESION (USUARIO VARCHAR(20), VIGENTE VARCHAR(1))', [])
+        db.executeSql('CREATE TABLE IF NOT EXISTS SESION (USUARIO VARCHAR(20), APELLIDO VARCHAR(20), VIGENTE VARCHAR(2))', [])
           .then(() => console.log('FSR: TABLA CREADA OK'))
           .catch(e => console.log('FSR: ' + JSON.stringify(e)));
       })
@@ -29,7 +29,7 @@ export class SesionService {
       location: 'default'
     })
       .then((db: SQLiteObject) => {
-        return db.executeSql('SELECT USUARIO, VIGENTE FROM SESION', [])
+        return db.executeSql('SELECT USUARIO, APELLIDO, VIGENTE FROM SESION', [])
           .then((data) => {
             let lista_sesion = [];
 
@@ -48,26 +48,26 @@ export class SesionService {
       });
   }
   // al iniciar sesion esta tabla se cra con el usuario y un dato 
-  nuevaSesion(nombre: string, vigente: string) {
+  nuevaSesion(usuario: string, vigente: string) {
     this.sqlite.create({
       name: 'data.db',
       location: 'default'
     })
       .then((db: SQLiteObject) => {
-        db.executeSql('INSERT INTO SESION (USUARIO, VIGENTE) VALUES (?, ?)', [nombre, vigente])
+        db.executeSql('INSERT INTO SESION (USUARIO,  VIGENTE) VALUES (?, ?, ?)', [usuario, vigente])
           .then(() => console.log('FSR: SESION CREADA'))
           .catch(e => console.log('FSR: ' + JSON.stringify(e)));
       })
       .catch(e => console.log('FSR: ' + JSON.stringify(e)));
   }
 
-  sesionActual(vigente: string, user: string) {
+  sesionActual( usuario: string, vigente: string) {
     this.sqlite.create({
       name: 'data.db',
       location: 'default'
     })
       .then((db: SQLiteObject) => {
-        db.executeSql('UPDATE SESION SET VIGENTE = ? WHERE USUARIO = ?', [vigente, user])
+        db.executeSql('UPDATE SESION SET USUARIO  WHERE VIGENTE = ?', [usuario,vigente ])
           .then(() => console.log('FSR: SESION ACTUALIZADA'))
           .catch(e => console.log('FSR: ' + JSON.stringify(e)));
       })

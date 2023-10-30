@@ -11,39 +11,37 @@ import { SesionService } from 'src/app/services/sesion.service';
 })
 export class CargaPage implements OnInit {
 
-  lista_activa: Sesion[] = [];
-  existe: string = '';
-  Valido = false;
-  constructor( private router: Router, private sesionService:SesionService) { }
+  lista_persistencia: Sesion[] = [];
+  usuario2: string = '';
+  validador = false;
+
+
+  constructor(private sesionService:SesionService, private router: Router) { }
 
   ngOnInit() {
     setTimeout(() => {
       this.sesionService.ObtenerSesion().then(data => {
         for (let x = 0; x < data.length; x++) {
-          this.lista_activa.push(data[x]);
+          this.lista_persistencia.push(data[x]);
         }
   
-        for (let i = 0; i < this.lista_activa.length; i++) {
-          if (this.lista_activa[i].VIGENTE.includes('1')) {
-            this.Valido = true;
-            this.existe = this.lista_activa[i].USUARIO;
+        for (let i = 0; i < this.lista_persistencia.length; i++) {
+          if (this.lista_persistencia[i].VIGENTE.includes('1')) {
+            this.validador = true;
+            this.usuario2 = this.lista_persistencia[i].USUARIO;
           }
-          console.log('PASASTEBPOR AQUI')
         }
   
-        if (this.Valido) {
+        if (this.validador) {
           let parametros: NavigationExtras = {
-            
-            replaceUrl: true,
             state: {
-              user: this.existe
-            }
-            
+              user: this.usuario2
+            },
+            replaceUrl: true
           }
           this.router.navigate(['principal'], parametros);
-          console.log('la hiciste hermano')
         } else {
-          console.log('ya basta elessss')
+          
           this.router.navigate(['login']);
         }
   
@@ -52,6 +50,6 @@ export class CargaPage implements OnInit {
       });
     }, 1500);
   }
-  }
 
+}
 

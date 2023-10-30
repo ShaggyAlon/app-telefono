@@ -43,22 +43,36 @@ export class LoginPage implements OnInit {
   constructor(private router: Router, private dbService: DbService, private sesionService: SesionService, private apiService: ApiService) { }
 
   ngOnInit() {
+    // OBTIENES DATO DE TABLA PERSONA Y LAS ALMACENA EN LISTA_PERSONA
     this.dbService.obtenerTodasLasPersonas().then(data => {
       for (let x = 0; x < data.length; x++) {
         this.lista_personas.push(data[x]);
       }
-      
+
     });
+    // OBTINES DATOS DE LA SESION 
     this.sesionService.ObtenerSesion().then(data => {
       for (let x = 0; x < data.length; x++) {
-        this.lista_sesion.push(data[x].USUARIO);
+        this.lista_sesion.push(data[x]);
       }
     });
+  }
+
+  registro() {
+    let parametros: NavigationExtras = {
+      replaceUrl: true
+    }
+    this.router.navigate(['persona-crear'], parametros);
+  }
+
+  recuperar() {
+    let parametros: NavigationExtras = {
+      replaceUrl: true
+    }
+    this.router.navigate(['recuperar'], parametros);
 
   }
 
-
-  // BOTON NAVEGAR
   async ingresar() {
     this.isAlertOpenError = false;
 
@@ -72,11 +86,11 @@ export class LoginPage implements OnInit {
       this.lista_respuesta.push(jsonProcesado["result"][x]);
 
       if (this.mdl_usuario != '' && this.mdl_contra != '') {
-
+// SELECT A TABLA PERSONA
         this.dbService.personaValidar(this.mdl_usuario).then(data => {
 
           this.usuario = data[3];
-          this.contra = data[4];
+          this.contra = data[5];
 
           if (this.mdl_usuario == this.usuario && this.mdl_contra == this.contra
 
@@ -100,52 +114,31 @@ export class LoginPage implements OnInit {
                 replaceUrl: true
               }
               this.vigente = '1'
-              this.sesionService.nuevaSesion(this.vigente, this.mdl_usuario);
+              this.sesionService.nuevaSesion(this.mdl_usuario, this.vigente);
               console.log(this.mdl_usuario);
               this.router.navigate(['principal'], parametros);
             }
 
           }
           else {
-            if (this.lista_respuesta[x]['RESPUESTA'] == "MALO SEÑOR" ||
+            if (this.lista_respuesta[x]['RESPUESTA'] == "LOGIN NOK" ||
               this.mdl_usuario != this.usuario && this.mdl_contra != this.contra) {
-              this.isAlertOpenError = true;
+              this.isAlertOpen = true;
             }
           }
 
         });
 
       } else {
-        console.log('maldito else')
         this.isAlertOpen = true;
       }
 
     }
 
   }
-  
 
-  /* METODO REGISTRO */
-  registro() {
-    let paramatros: NavigationExtras = {
-      replaceUrl: true
-    }
-
-    this.router.navigate(['persona-crear'], paramatros);
-  }
-  /* RECUPERAR RECUPERAR CONTRASEÑA */
-  recuperar() {
-    let paramatros: NavigationExtras = {
-      replaceUrl: true
-    }
-    this.router.navigate(['recuperar'], paramatros);
-  }
-
-
-
-
-  /* ALERTA */
   setOpen(isOpen: boolean) {
     this.isAlertOpen = isOpen;
   }
+
 }
