@@ -41,8 +41,8 @@ export class PrincipalPage implements OnInit {
       replaceUrl: true
     }
     console.log('hola soy la sesion cerrandose')
-    this.vigente = '1'
-    this.sesionService.sesionActual(this.usuario,this.vigente)
+    this.vigente = '0'
+    this.sesionService.sesionActual(this.vigente,this.usuario)
     this.router.navigate(['login'], parametros)
   }
 

@@ -68,11 +68,11 @@ export class PersonaCrearPage implements OnInit {
       replaceUrl: true
     }
     let data = this.apiService.personaAlmacenar(
+      this.mdl_nombre,
+      this.mdl_apellido,
       this.mdl_usuario,
       this.mdl_email,
-      this.mdl_contrasena,
-      this.mdl_nombre,
-      this.mdl_apellido);
+      this.mdl_contrasena);
 // PROCESAR RESPUESTA JSON
     let respuesta = await lastValueFrom(data);
     let json = JSON.stringify(respuesta);

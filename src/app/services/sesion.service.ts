@@ -12,9 +12,9 @@ export class SesionService {
       location: 'default'
     })
       .then((db: SQLiteObject) => {
-        db.executeSql('CREATE TABLE IF NOT EXISTS SESION (USUARIO VARCHAR(20), APELLIDO VARCHAR(20), VIGENTE VARCHAR(2))', [])
-          .then(() => console.log('FSR: TABLA CREADA OK'))
-          .catch(e => console.log('FSR: ' + JSON.stringify(e)));
+        db.executeSql('CREATE TABLE IF NOT EXISTS SESION (USUARIO VARCHAR(20), VIGENTE VARCHAR(2))', [])
+          .then(() => console.log('FSR CREATE: TABLA CREADA OK'))
+          .catch(e => console.log('FSR CREATE: ' + JSON.stringify(e)));
       })
 
       .catch(e => console.log('FSR: ' + JSON.stringify(e)));
@@ -29,7 +29,7 @@ export class SesionService {
       location: 'default'
     })
       .then((db: SQLiteObject) => {
-        return db.executeSql('SELECT USUARIO, APELLIDO, VIGENTE FROM SESION', [])
+        return db.executeSql('SELECT USUARIO, VIGENTE FROM SESION', [])
           .then((data) => {
             let lista_sesion = [];
 
@@ -54,7 +54,7 @@ export class SesionService {
       location: 'default'
     })
       .then((db: SQLiteObject) => {
-        db.executeSql('INSERT INTO SESION (USUARIO,  VIGENTE) VALUES (?, ?, ?)', [usuario, vigente])
+        db.executeSql('INSERT INTO SESION (USUARIO,  VIGENTE) VALUES (?, ?)', [usuario, vigente])
           .then(() => console.log('FSR: SESION CREADA'))
           .catch(e => console.log('FSR: ' + JSON.stringify(e)));
       })
@@ -67,7 +67,7 @@ export class SesionService {
       location: 'default'
     })
       .then((db: SQLiteObject) => {
-        db.executeSql('UPDATE SESION SET USUARIO  WHERE VIGENTE = ?', [usuario,vigente ])
+        db.executeSql('UPDATE SESION SET VIGENTE = ? WHERE USUARIO = ?', [usuario,vigente ])
           .then(() => console.log('FSR: SESION ACTUALIZADA'))
           .catch(e => console.log('FSR: ' + JSON.stringify(e)));
       })

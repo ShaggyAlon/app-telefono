@@ -11,7 +11,7 @@ import { SesionService } from 'src/app/services/sesion.service';
 })
 export class CargaPage implements OnInit {
 
-  lista_persistencia: Sesion[] = [];
+  lista_sesion: Sesion[] = [];
   usuario2: string = '';
   validador = false;
 
@@ -22,13 +22,13 @@ export class CargaPage implements OnInit {
     setTimeout(() => {
       this.sesionService.ObtenerSesion().then(data => {
         for (let x = 0; x < data.length; x++) {
-          this.lista_persistencia.push(data[x]);
+          this.lista_sesion.push(data[x]);
         }
   
-        for (let i = 0; i < this.lista_persistencia.length; i++) {
-          if (this.lista_persistencia[i].VIGENTE.includes('1')) {
+        for (let i = 0; i < this.lista_sesion.length; i++) {
+          if (this.lista_sesion[i].VIGENTE.includes('1')) {
             this.validador = true;
-            this.usuario2 = this.lista_persistencia[i].USUARIO;
+            this.usuario2 = this.lista_sesion[i].USUARIO;
           }
         }
   

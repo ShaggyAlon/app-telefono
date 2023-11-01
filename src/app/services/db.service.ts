@@ -17,10 +17,6 @@ export class DbService {
         db.executeSql('CREATE TABLE IF NOT EXISTS PERSONA(NOMBRE VARCHAR(20), APELLIDO VARCHAR(20),USUARIO VARCHAR(20), EMAIL VARCHAR(20), CONTRASENA VARCHAR(20))', [])
           .then(() => console.log('FSR: TABLA CREADA OK'))
           .catch(e => console.log('FSR: ' + JSON.stringify(e)));
-        // TABLA PARA VER SI SE MANTIENE SESION
-        db.executeSql('CREATE TABLE IF NOT EXISTS GSESION(USUARIO VARCHAR(20), SESION VARCHAR(1))', [])
-          .then(() => console.log('FSR: TABLA CREADA OK'))
-          .catch(e => console.log('FSR: ' + JSON.stringify(e)));
       })
       .catch(e => console.log('FSR: ' + JSON.stringify(e)));
       
@@ -39,23 +35,23 @@ export class DbService {
       })
       .catch(e => console.log('FSR: ' + JSON.stringify(e)));
   }
-  selectTabla(){
-    this.sqlite.create({
-      name: 'data.db',
-      location: 'default'
-    }).then((db: SQLiteObject) => {
-      return db.executeSql('SELECT USUARIO , EMAIL,CONTRASENA FROM PERSONA', [])
-      .then((data) => {
-        if (data.rows.length > 0) {
-          for (let i = 0; i < data.rows.length; i++) {
-            console.log('Fila ' + i + ':', data.rows.item(i));
-          }
-        } else {
-          console.log('La tabla PERSONA está vacía.');
-        }
-      }).catch(e => console.error('Error al ejecutar la consulta: ' + JSON.stringify(e)));
-    }).catch(e => console.error('Error al abrir la base de datos: ' + JSON.stringify(e)));
-  }
+  // selectTabla(){
+  //   this.sqlite.create({
+  //     name: 'data.db',
+  //     location: 'default'
+  //   }).then((db: SQLiteObject) => {
+  //     return db.executeSql('SELECT USUARIO, EMAIL,CONTRASENA FROM PERSONA', [])
+  //     .then((data) => {
+  //       if (data.rows.length > 0) {
+  //         for (let i = 0; i < data.rows.length; i++) {
+  //           console.log('Fila ' + i + ':', data.rows.item(i));
+  //         }
+  //       } else {
+  //         console.log('La tabla PERSONA está vacía.');
+  //       }
+  //     }).catch(e => console.error('Error al ejecutar la consulta: ' + JSON.stringify(e)));
+  //   }).catch(e => console.error('Error al abrir la base de datos: ' + JSON.stringify(e)));
+  // }
 
 
   obtenerTodasLasPersonas() {
@@ -104,7 +100,7 @@ export class DbService {
       location: 'default'
     })
       .then((db: SQLiteObject) => {
-        return db.executeSql('SELECT NOMBRE, APELLIDO, USUARIO, EMAIL, CONTRASENA FROM PERSONA WHERE NOMBRE = ?', [usuario])
+        return db.executeSql('SELECT NOMBRE, APELLIDO, USUARIO, EMAIL, CONTRASENA FROM PERSONA WHERE USUARIO = ?', [usuario])
           .then((data) => {
             let lista_validarU: Persona[] = [];
 
