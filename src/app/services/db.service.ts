@@ -29,7 +29,7 @@ export class DbService {
       location: 'default'
     })
       .then((db: SQLiteObject) => {
-        db.executeSql('INSERT INTO PERSONA (NOMBRE, APELLIDO, EMAIL, USUARIO, CONTRASENA ) VALUES(?, ?, ?, ?, ?)', [nombre, apellido, usuario, email, contrasena])
+        db.executeSql('INSERT INTO PERSONA (NOMBRE, APELLIDO, USUARIO,EMAIL, CONTRASENA ) VALUES(?, ?, ?, ?, ?)', [nombre, apellido, usuario, email, contrasena])
           .then(() => console.log('FSR: PERSONA ALMACENADA OK'))
           .catch(e => console.log('FSR: ' + JSON.stringify(e)));
       })

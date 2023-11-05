@@ -68,11 +68,13 @@ export class PersonaCrearPage implements OnInit {
       replaceUrl: true
     }
     let data = this.apiService.personaAlmacenar(
-      this.mdl_nombre,
-      this.mdl_apellido,
       this.mdl_usuario,
       this.mdl_email,
-      this.mdl_contrasena);
+      this.mdl_contrasena,
+      this.mdl_nombre,
+      this.mdl_apellido
+      
+      );
 // PROCESAR RESPUESTA JSON
     let respuesta = await lastValueFrom(data);
     let json = JSON.stringify(respuesta);
@@ -84,23 +86,17 @@ export class PersonaCrearPage implements OnInit {
 
       // SI NO HAY DUPLICADOS SE ALMACENA EN TABLA PERSONA
       if (this.mdl_usuario != '' && this.mdl_email != '' && this.mdl_contrasena != '' && this.mdl_nombre != '' && this.mdl_apellido != '') {
-        if (!usuarioExistente && !correoExistente &&
+        if (!usuarioExistente && !correoExistente ||
           this.lista_respuesta[x]["RESPUESTA"] == "OK") {
           this.dbService.almacenarPersona(
             this.mdl_nombre,
             this.mdl_apellido,
-            this.mdl_email,
             this.mdl_usuario,
+            this.mdl_email,
             this.mdl_contrasena
 
           );
-          // ALGO FUNCIONA PARA MATENER LA MALDITA SESION
-          // console.log('se agrego una sesion')
-          // this.sesionService.nuevaSesion(
-          //   this.mdl_usuario,
-          //   this.mdl_email,
-          //   this.vigente
-          // );
+
 
           this.router.navigate(['login'], parametros);
 // RESPUESTA DE DUPLICACION

@@ -74,6 +74,7 @@ export class LoginPage implements OnInit {
   }
 
   async ingresar() {
+    this.isAlertOpen = false;
     this.isAlertOpenError = false;
 
     let data = this.apiService.personaLogin(this.mdl_usuario, this.mdl_contra);
@@ -123,7 +124,8 @@ export class LoginPage implements OnInit {
           else {
             if (this.lista_respuesta[x]['RESPUESTA'] == "LOGIN NOK" ||
               this.mdl_usuario != this.usuario && this.mdl_contra != this.contra) {
-              this.isAlertOpen = true;
+              this.isAlertOpenError = true;
+              console.log('que pasa')
             }
           }
 
@@ -131,6 +133,7 @@ export class LoginPage implements OnInit {
 
       } else {
         this.isAlertOpen = true;
+        
       }
 
     }
