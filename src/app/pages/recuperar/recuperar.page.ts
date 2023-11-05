@@ -19,9 +19,10 @@ export class RecuperarPage implements OnInit {
   lista_personas: Persona[] = [];
   lista_usuarios: string[] = [];
 
-mdl_apellido: string = '';
-// mdl_usuario: string = '';
-// mdl_contra: string = '';
+  mdl_apellido: string = '';
+  // mdl_usuario: string = '';
+  // mdl_contra: string = '';
+  
   // alerta
   isAlertOpen = false;
   alertButtons = ['OK'];
@@ -30,10 +31,10 @@ mdl_apellido: string = '';
   constructor(private dbService: DbService, private router: Router) {}
 
   ngOnInit() {
-    this.dbService.obtenerTodasLasPersonas().then(data => {
+    console.log("Comenzaré a buscar usuarios")
+    this.dbService.dbObtenerTodasLasPersonas().then(data => {
       for (let x = 0; x < data.length; x++) {
         this.lista_personas.push(data[x]);
-        this.lista_usuarios.push(data[x].NOMBRE);
       }
     })
   }
@@ -43,11 +44,13 @@ mdl_apellido: string = '';
       this.mdl_message = "Ingrese sus datos";
       this.isAlertOpen = true;
     } else {
-      let usuarioEncontrado = this.lista_personas.find(usuario => usuario.NOMBRE === this.mdl_usuario);
-  
+      console.log("Comenzaré Usuario encontrado")
+      let usuarioEncontrado = this.lista_personas.find(usuario => usuario.usuario == this.mdl_usuario);
+
       if (usuarioEncontrado) {
+        console.log("Usuario encontrado")
         // Llama al método para actualizar la contraseña
-        this.dbService.actualizarPersona(usuarioEncontrado.NOMBRE, this.mdl_contra);
+        this.dbService.dbActualizarPersona(usuarioEncontrado.nombre, this.mdl_contra);
   
         let parametros: NavigationExtras = {
           replaceUrl: true,

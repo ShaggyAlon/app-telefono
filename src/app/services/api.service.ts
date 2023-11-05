@@ -11,7 +11,7 @@ export class ApiService {
   constructor(private http: HttpClient  ) { }
 
 
-  personaAlmacenar (usuario: string, correo: string, contrasena: string, nombre: string, apellido: string) {
+  apiPersonaAlmacenar (usuario: string, correo: string, contrasena: string, nombre: string, apellido: string) {
     return this.http.post(this.ruta, {
       nombreFuncion: 'UsuarioAlmacenar',
       parametros: [
@@ -20,7 +20,7 @@ export class ApiService {
     }).pipe();
   }
 
-  personaLogin (usuario: string, contrasena: string) { 
+  apiPersonaLogin (usuario: string, contrasena: string) { 
     return this.http.post(this.ruta, {
       nombreFuncion: 'UsuarioLogin',
       parametros: [
@@ -29,7 +29,7 @@ export class ApiService {
     }).pipe();  
   }
 
-  personaModificarContrasena (usuario: string, contrasenaNueva: string, contrasenaActual: string) {
+  apiPersonaModificarContrasena (usuario: string, contrasenaNueva: string, contrasenaActual: string) {
     return this.http.patch(this.ruta, {
       nombreFuncion: 'UsuarioModificarContrasena',
       parametros: [

@@ -1,15 +1,15 @@
 export class Persona {
-    NOMBRE: string;
-    APELLIDO: string;
-    USUARIO: string;
-    EMAIL: string;
-    CONTRASENA: string;
+    nombre: string;
+    apellido: string;
+    usuario: string;
+    email: string;
+    contrasena: string;
 
-    constructor() {
-        this.NOMBRE = '';
-        this.APELLIDO = '';
-        this.USUARIO = '';
-        this.EMAIL = '';
-        this.CONTRASENA = '';
+    constructor( nombre: string, apellido: string, usuario: string, email: string, contrasena: string) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.usuario = usuario;
+        this.email = email;
+        this.contrasena = contrasena;
     }
 }

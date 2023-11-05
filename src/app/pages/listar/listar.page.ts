@@ -36,7 +36,7 @@ export class ListarPage implements OnInit {
         console.log([this.usuario]);
         console.log([this.contra]);
       }
-      this.dbService.obtenerTodasLasPersonas().then(data => {
+      this.dbService.dbObtenerTodasLasPersonas().then(data => {
         for (let x = 0; x < data.length; x++) {
           this.lista_personas.push(data[x]);
         }

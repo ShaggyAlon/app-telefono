@@ -43,19 +43,21 @@ export class LoginPage implements OnInit {
   constructor(private router: Router, private dbService: DbService, private sesionService: SesionService, private apiService: ApiService) { }
 
   ngOnInit() {
-    // OBTIENES DATO DE TABLA PERSONA Y LAS ALMACENA EN LISTA_PERSONA
-    this.dbService.obtenerTodasLasPersonas().then(data => {
+    // OBTIENES DATO DE TABLA PERSONA Y LAS ALMACENA EN LISTA_PERSONAS
+    this.dbService.dbObtenerTodasLasPersonas().then(data => {
       for (let x = 0; x < data.length; x++) {
         this.lista_personas.push(data[x]);
       }
-
     });
-    // OBTINES DATOS DE LA SESION 
+    // OBTIENES DATOS DE LA SESION 
     this.sesionService.ObtenerSesion().then(data => {
       for (let x = 0; x < data.length; x++) {
         this.lista_sesion.push(data[x]);
       }
     });
+
+    console.log("Login")
+    console.log(this.lista_personas);
   }
 
   registro() {
@@ -77,7 +79,7 @@ export class LoginPage implements OnInit {
     this.isAlertOpen = false;
     this.isAlertOpenError = false;
 
-    let data = this.apiService.personaLogin(this.mdl_usuario, this.mdl_contra);
+    let data = this.apiService.apiPersonaLogin(this.mdl_usuario, this.mdl_contra);
     let respuesta = await lastValueFrom(data);
 
     let json = JSON.stringify(respuesta);
@@ -88,7 +90,7 @@ export class LoginPage implements OnInit {
 
       if (this.mdl_usuario != '' && this.mdl_contra != '') {
 // SELECT A TABLA PERSONA
-        this.dbService.personaValidar(this.mdl_usuario).then(data => {
+        this.dbService.dbPersonaValidar(this.mdl_usuario).then(data => {
 
           this.usuario = data[3];
           this.contra = data[5];

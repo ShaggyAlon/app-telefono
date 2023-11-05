@@ -11,30 +11,28 @@ export class DbService {
     this.sqlite.create({
       name: 'data.db',
       location: 'default'
-    })
-    
+    })   
       .then((db: SQLiteObject) => {
-        db.executeSql('CREATE TABLE IF NOT EXISTS PERSONA(NOMBRE VARCHAR(20), APELLIDO VARCHAR(20),USUARIO VARCHAR(20), EMAIL VARCHAR(20), CONTRASENA VARCHAR(20))', [])
+        db.executeSql('CREATE TABLE IF NOT EXISTS PERSONA(NOMBRE VARCHAR(20), APELLIDO VARCHAR(20), USUARIO VARCHAR(20), EMAIL VARCHAR(20), CONTRASENA VARCHAR(20))', [])
           .then(() => console.log('FSR: TABLA CREADA OK'))
           .catch(e => console.log('FSR: ' + JSON.stringify(e)));
       })
       .catch(e => console.log('FSR: ' + JSON.stringify(e)));
-      
   }
 
-
-  almacenarPersona(nombre: string, apellido: string, usuario: string, email: string, contrasena: string) {
+  dbAlmacenarPersona(persona: Persona) {
     this.sqlite.create({
       name: 'data.db',
       location: 'default'
     })
       .then((db: SQLiteObject) => {
-        db.executeSql('INSERT INTO PERSONA (NOMBRE, APELLIDO, USUARIO,EMAIL, CONTRASENA ) VALUES(?, ?, ?, ?, ?)', [nombre, apellido, usuario, email, contrasena])
+        db.executeSql('INSERT INTO PERSONA (NOMBRE, APELLIDO, USUARIO, EMAIL, CONTRASENA ) VALUES(?, ?, ?, ?, ?)', [persona.nombre, persona.apellido, persona.usuario, persona.email, persona.contrasena])
           .then(() => console.log('FSR: PERSONA ALMACENADA OK'))
           .catch(e => console.log('FSR: ' + JSON.stringify(e)));
       })
       .catch(e => console.log('FSR: ' + JSON.stringify(e)));
   }
+
   // selectTabla(){
   //   this.sqlite.create({
   //     name: 'data.db',
@@ -53,11 +51,10 @@ export class DbService {
   //   }).catch(e => console.error('Error al abrir la base de datos: ' + JSON.stringify(e)));
   // }
 
-
-  obtenerTodasLasPersonas() {
+  dbObtenerTodasLasPersonas() {
     return this.sqlite.create({
       name: 'data.db',
-      location: 'default'
+      location: 'default',
     })
       .then((db: SQLiteObject) => {
         return db.executeSql('SELECT NOMBRE, APELLIDO, USUARIO, EMAIL, CONTRASENA FROM PERSONA', [])
@@ -71,15 +68,15 @@ export class DbService {
             return lista_personas;
           })
           .catch(e => {
-            return []
+            return [];
           });
       })
       .catch(e => {
-        return []
+        return [];
       });
   }
 
-  actualizarPersona(usuario: string, nuevaContrasena: string) {
+  dbActualizarPersona(usuario: string, nuevaContrasena: string) {
     this.sqlite.create({
       name: 'data.db',
       location: 'default'
@@ -91,10 +88,11 @@ export class DbService {
       })
       .catch(e => console.log('FSR: ' + JSON.stringify(e)));
   }
+
   // VALIDAR
   //Hace un select a tabla persona, si la encurntra crea una lsita y las almacena.
   // Si no encuentra nada devuelve una lsita vacia
-  personaValidar(usuario: string) {
+  dbPersonaValidar(usuario: string) {
     return this.sqlite.create({
       name: 'data.db',
       location: 'default'
@@ -108,8 +106,8 @@ export class DbService {
               lista_validarU.push(data.rows.item(x));
             }
 
-            return [lista_validarU[0].NOMBRE, lista_validarU[0].APELLIDO, lista_validarU[0].USUARIO,
-            lista_validarU[0].EMAIL, lista_validarU[0].CONTRASENA];
+            return [lista_validarU[0].nombre, lista_validarU[0].apellido, lista_validarU[0].usuario,
+            lista_validarU[0].email, lista_validarU[0].contrasena];
 
           })
           .catch(e => {

@@ -28,7 +28,7 @@ export class PrincipalPage implements OnInit {
       this.usuario = parametros?.extras.state['user'];
       this.apellido = parametros?.extras.state['apellido'];
     }
-    this.dbService.personaValidar(this.usuario).then(data => {
+    this.dbService.dbPersonaValidar(this.usuario).then(data => {
       console.log('a lo maldito')
       this.nombre =  data[1]; 
     });

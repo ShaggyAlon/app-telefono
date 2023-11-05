@@ -6,10 +6,9 @@
 
 <ion-content [fullscreen]="true" class="fondo2">
   <div class="centrado">
-          <div class="ion-text-center">
-            <ion-label class="titulo">  REGISTRAR </ion-label>
-          </div>
- 
+    <div class="ion-text-center">
+      <ion-label class="titulo">  REGISTRAR </ion-label>
+    </div>
     <ion-item class="inputg ion-margin-top">
       <ion-input [(ngModel)]="mdl_nombre" label="Nombre" labelPlacement="floating"></ion-input>
     </ion-item>
@@ -17,13 +16,13 @@
       <ion-input [(ngModel)]="mdl_apellido" label="Apellido" labelPlacement="floating"></ion-input>
     </ion-item>
     <ion-item class="inputg ion-margin-top">
-      <ion-input [(ngModel)]="mdl_usuario" label="usuario" labelPlacement="floating"></ion-input>
+      <ion-input [(ngModel)]="mdl_usuario" label="Usuario" labelPlacement="floating"></ion-input>
     </ion-item>
     <ion-item class="inputg ion-margin-top">
-      <ion-input [(ngModel)]="mdl_email" label="email" type="email" labelPlacement="floating"></ion-input>
+      <ion-input [(ngModel)]="mdl_email" label="Email" type="email" labelPlacement="floating"></ion-input>
     </ion-item>
     <ion-item class="inputg ion-margin-top">
-      <ion-input [(ngModel)]="mdl_contrasena" label="contraseña" type="password" labelPlacement="floating"></ion-input>
+      <ion-input [(ngModel)]="mdl_contrasena" label="Contraseña" type="password" labelPlacement="floating"></ion-input>
     </ion-item>
     <br>
     <ion-button class="boton fondo barrag" expand="block" (click)="almacenarPersona()"> Registrar
