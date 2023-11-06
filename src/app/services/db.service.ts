@@ -33,24 +33,6 @@ export class DbService {
       .catch(e => console.log('FSR: ' + JSON.stringify(e)));
   }
 
-  // selectTabla(){
-  //   this.sqlite.create({
-  //     name: 'data.db',
-  //     location: 'default'
-  //   }).then((db: SQLiteObject) => {
-  //     return db.executeSql('SELECT USUARIO, EMAIL,CONTRASENA FROM PERSONA', [])
-  //     .then((data) => {
-  //       if (data.rows.length > 0) {
-  //         for (let i = 0; i < data.rows.length; i++) {
-  //           console.log('Fila ' + i + ':', data.rows.item(i));
-  //         }
-  //       } else {
-  //         console.log('La tabla PERSONA está vacía.');
-  //       }
-  //     }).catch(e => console.error('Error al ejecutar la consulta: ' + JSON.stringify(e)));
-  //   }).catch(e => console.error('Error al abrir la base de datos: ' + JSON.stringify(e)));
-  // }
-
   dbObtenerTodasLasPersonas() {
     return this.sqlite.create({
       name: 'data.db',
@@ -59,13 +41,20 @@ export class DbService {
       .then((db: SQLiteObject) => {
         return db.executeSql('SELECT NOMBRE, APELLIDO, USUARIO, EMAIL, CONTRASENA FROM PERSONA', [])
           .then((data) => {
-            let lista_personas = [];
+            let lista_personas: Persona[] = [];
 
             for (let x = 0; x < data.rows.length; x++) {
-              lista_personas.push(data.rows.item(x));
+              let item = data.rows.item(x);
+              let persona = new Persona(
+                item.NOMBRE,
+                item.APELLIDO,
+                item.USUARIO,
+                item.EMAIL,
+                item.CONTRASENA
+              );
+              lista_personas.push(persona);
             }
-
-            return lista_personas;
+            return lista_personas
           })
           .catch(e => {
             return [];
@@ -87,6 +76,7 @@ export class DbService {
           .catch(e => console.log('FSR: ' + JSON.stringify(e)));
       })
       .catch(e => console.log('FSR: ' + JSON.stringify(e)));
+    return true;
   }
 
   // VALIDAR
@@ -118,4 +108,5 @@ export class DbService {
         return []
       });
   }
+  
 }

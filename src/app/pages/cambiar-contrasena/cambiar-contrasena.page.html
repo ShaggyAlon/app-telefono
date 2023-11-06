@@ -1,0 +1,33 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="barrag">
+    <ion-title>CAMBIAR CONTRASEÑA</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="fondol">
+  <div class="centrado">
+    <ion-item class="inputg ion-margin-top">
+      <ion-input lines="none" [(ngModel)]="mdl_usuario" label="usuario" labelPlacement="floating"></ion-input>
+    </ion-item>
+    <br>
+    <ion-item class="inputg ion-margin-top">
+      <ion-input lines="none" [(ngModel)]="mdl_contra" label="contraseña" type="password" labelPlacement="floating"></ion-input>
+    </ion-item>
+    <br>
+    <ion-item class="inputg ion-margin-top">
+      <ion-input lines="none" [(ngModel)]="mdl_new_contra" label="nueva contraseña" type="password" labelPlacement="floating"></ion-input>
+    </ion-item>    
+    <br>
+    <!-- BOTON RESTABLECER CONTRASEÑA -->
+    <ion-button (click)="cambiar()" expand="block" class="boton fondo barrag">Cambiar</ion-button>
+    <ion-button (click)="volver()" expand="block" class="boton fondo barrag">Volver</ion-button>
+  </div>
+
+  <ion-alert 
+    [isOpen]="isAlertOpen"
+    header="INFORMACION" 
+    [message]="mdl_message" 
+    [buttons]="alertButtons"
+    (didDismiss)="setOpen(false)">
+  </ion-alert>
+</ion-content>

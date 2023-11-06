@@ -33,12 +33,13 @@ const routes: Routes = [
     loadChildren: () => import('./pages/listar/listar.module').then( m => m.ListarPageModule)
   },
   {
+    path: 'cambiar-contrasena',
+    loadChildren: () => import('./pages/cambiar-contrasena/cambiar-contrasena.module').then( m => m.CambiarContrasenaPageModule)
+  },  
+  {
     path: '**',
     loadChildren: () => import('./pages/e404/e404.module').then( m => m.E404PageModule)
-  }
-
-
-
+  },
 ];
 
 @NgModule({

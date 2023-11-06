@@ -20,7 +20,9 @@ export class PrincipalPage implements OnInit {
 
   lista_personas: Persona[] = [];
   vigente: string = '';
-  constructor(private router: Router, private dbService: DbService, private sesionService:SesionService) {}
+  constructor(private router: Router, 
+              private dbService: DbService, 
+              private sesionService:SesionService) {}
 
   ngOnInit() {
     let parametros = this.router.getCurrentNavigation();
@@ -29,21 +31,26 @@ export class PrincipalPage implements OnInit {
       this.apellido = parametros?.extras.state['apellido'];
     }
     this.dbService.dbPersonaValidar(this.usuario).then(data => {
-      console.log('a lo maldito')
-      this.nombre =  data[1]; 
+      this.nombre = data[1]; 
     });
   }
-
-
 
   logout(){
     let parametros: NavigationExtras = {
       replaceUrl: true
     }
-    console.log('hola soy la sesion cerrandose')
     this.vigente = '0'
     this.sesionService.sesionActual(this.vigente,this.usuario)
     this.router.navigate(['login'], parametros)
+  }
+
+  cambiarContrasena(){
+    let parametros: NavigationExtras = {
+      state: {
+        user: this.usuario
+      }
+    }
+    this.router.navigate(['cambiar-contrasena'], parametros)
   }
 
 }

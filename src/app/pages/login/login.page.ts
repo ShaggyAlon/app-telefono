@@ -24,6 +24,7 @@ export class LoginPage implements OnInit {
   usuario: string = '';
   contra: string = '';
   apellido: string = '';
+
   // OBTENER LISTA DE MODELS
   lista_personas: Persona[] = [];
 
@@ -40,39 +41,18 @@ export class LoginPage implements OnInit {
   alertButtons = ['OK'];
 
 
-  constructor(private router: Router, private dbService: DbService, private sesionService: SesionService, private apiService: ApiService) { }
+  constructor(private router: Router, 
+              private dbService: DbService, 
+              private sesionService: SesionService, 
+              private apiService: ApiService) { }
 
   ngOnInit() {
-    // OBTIENES DATO DE TABLA PERSONA Y LAS ALMACENA EN LISTA_PERSONAS
-    this.dbService.dbObtenerTodasLasPersonas().then(data => {
-      for (let x = 0; x < data.length; x++) {
-        this.lista_personas.push(data[x]);
-      }
-    });
     // OBTIENES DATOS DE LA SESION 
     this.sesionService.ObtenerSesion().then(data => {
       for (let x = 0; x < data.length; x++) {
         this.lista_sesion.push(data[x]);
       }
     });
-
-    console.log("Login")
-    console.log(this.lista_personas);
-  }
-
-  registro() {
-    let parametros: NavigationExtras = {
-      replaceUrl: true
-    }
-    this.router.navigate(['persona-crear'], parametros);
-  }
-
-  recuperar() {
-    let parametros: NavigationExtras = {
-      replaceUrl: true
-    }
-    this.router.navigate(['recuperar'], parametros);
-
   }
 
   async ingresar() {
@@ -89,7 +69,7 @@ export class LoginPage implements OnInit {
       this.lista_respuesta.push(jsonProcesado["result"][x]);
 
       if (this.mdl_usuario != '' && this.mdl_contra != '') {
-// SELECT A TABLA PERSONA
+        // SELECT A TABLA PERSONA
         this.dbService.dbPersonaValidar(this.mdl_usuario).then(data => {
 
           this.usuario = data[3];
@@ -121,25 +101,31 @@ export class LoginPage implements OnInit {
               console.log(this.mdl_usuario);
               this.router.navigate(['principal'], parametros);
             }
-
-          }
-          else {
+          }else {
             if (this.lista_respuesta[x]['RESPUESTA'] == "LOGIN NOK" ||
               this.mdl_usuario != this.usuario && this.mdl_contra != this.contra) {
               this.isAlertOpenError = true;
-              console.log('que pasa')
             }
           }
-
         });
-
       } else {
         this.isAlertOpen = true;
-        
       }
-
     }
+  }
 
+  registro() {
+    let parametros: NavigationExtras = {
+      replaceUrl: true
+    }
+    this.router.navigate(['persona-crear'], parametros);
+  }
+
+  recuperar() {
+    let parametros: NavigationExtras = {
+      replaceUrl: true
+    }
+    this.router.navigate(['recuperar'], parametros);
   }
 
   setOpen(isOpen: boolean) {

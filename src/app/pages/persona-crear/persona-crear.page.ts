@@ -37,7 +37,9 @@ export class PersonaCrearPage implements OnInit {
   vigente: string = '';
 
 
-  constructor(private dbService: DbService, private router: Router, private apiService: ApiService, private sesionService: SesionService) { }
+  constructor(private dbService: DbService, 
+              private router: Router, 
+              private apiService: ApiService) { }
 
   ngOnInit() {
     this.dbService.dbObtenerTodasLasPersonas().then(data => {
@@ -45,123 +47,41 @@ export class PersonaCrearPage implements OnInit {
         this.lista_personas.push(data[x]);
       }
     });
-    console.log("Registrar");
-    console.log(this.lista_personas);
   }
 
-  almacenarPersona(){
-    let parametros: NavigationExtras = {
-      replaceUrl: true
-    }
-
+  async almacenarPersona(){
     if (this.mdl_usuario != '' && this.mdl_email != '' && this.mdl_contrasena != '' && this.mdl_nombre != '' && this.mdl_apellido != '') {
 
       let persona = new Persona(this.mdl_nombre, this.mdl_apellido, this.mdl_usuario, this.mdl_email, this.mdl_contrasena);
 
-      this.dbService.dbAlmacenarPersona(persona);
+      let data = this.apiService.apiPersonaAlmacenar(persona);
+      let respuesta = await lastValueFrom(data);
+      let json = JSON.stringify(respuesta);
+      let jsonProcesado = JSON.parse(json);
+      
+      for (let x = 0; x < jsonProcesado["result"].length; x++) {
+        this.lista_respuesta.push(jsonProcesado["result"][x]);
+        if (this.lista_respuesta[x]["RESPUESTA"] == "OK") {
 
-      this.router.navigate(['login'], parametros);
+          this.dbService.dbAlmacenarPersona(persona);
 
-      // let data = this.apiService.apiPersonaAlmacenar(
-      //   this.mdl_usuario,
-      //   this.mdl_email,
-      //   this.mdl_contrasena,
-      //   this.mdl_nombre,
-      //   this.mdl_apellido
-      // );
-      // let respuesta = await lastValueFrom(data);
-      // let json = JSON.stringify(respuesta);
-      // let jsonProcesado = JSON.parse(json);
+          let parametros: NavigationExtras = {
+            replaceUrl: true
+          }
+          this.router.navigate(['login'], parametros);
 
-      // for (let x = 0; x < jsonProcesado["result"].length; x++) {
-      //   this.lista_respuesta.push(jsonProcesado["result"][x]);
-      //   if (this.lista_respuesta[x]["RESPUESTA"] == "OK") {
-      //     this.dbService.dbAlmacenarPersona(
-      //       this.mdl_nombre,
-      //       this.mdl_apellido,
-      //       this.mdl_usuario,
-      //       this.mdl_email,
-      //       this.mdl_contrasena
-      //     );
-      //     this.router.navigate(['login'], parametros);
-      //   } else {
-      //     if (this.lista_respuesta[x]["RESPUESTA"] == "ERR01") {
-      //       this.isAlertOpenDuplicado = true;
-      //     } else if (this.lista_respuesta[x]["RESPUESTA"] == "ERR02") {
-      //       this.isAlertOpenEmail = true;
-      //     }
-      //   }
-      // }
+        } else {
+          if (this.lista_respuesta[x]["RESPUESTA"] == "ERR01") {
+            this.isAlertOpenDuplicado = true;
+          } else if (this.lista_respuesta[x]["RESPUESTA"] == "ERR02") {
+            this.isAlertOpenEmail = true;
+          }
+        }
+      }
     } else{
       this.isAlertOpen = true;
     }
   }
-
-
-  // async almacenarPersona() {
-  //   // VALIDACION DE EXISTENCIA MAOMA
-  //   let usuarioExistente = false;
-  //   let correoExistente = false;
-
-  //   for (let i = 0; i < this.lista_personas.length; i++) {
-  //     if (this.lista_personas[i].USUARIO === this.mdl_usuario) {
-  //       usuarioExistente = true;
-  //     }
-  //     if (this.lista_personas[i].EMAIL === this.mdl_email) {
-  //       correoExistente = true;
-  //     }
-  //   }
-  //   // ALMACENAR DATOS EN API DE PROFE
-  //   let parametros: NavigationExtras = {
-  //     replaceUrl: true
-  //   }
-  //   let data = this.apiService.personaAlmacenar(
-  //     this.mdl_usuario,
-  //     this.mdl_email,
-  //     this.mdl_contrasena,
-  //     this.mdl_nombre,
-  //     this.mdl_apellido
-      
-  //     );
-  //   // PROCESAR RESPUESTA JSON
-  //   let respuesta = await lastValueFrom(data);
-  //   let json = JSON.stringify(respuesta);
-  //   let jsonProcesado = JSON.parse(json);
-
-
-  //   for (let x = 0; x < jsonProcesado["result"].length; x++) {
-  //     this.lista_respuesta.push(jsonProcesado["result"][x]);
-
-  //     // SI NO HAY DUPLICADOS SE ALMACENA EN TABLA PERSONA
-  //     if (this.mdl_usuario != '' && this.mdl_email != '' && this.mdl_contrasena != '' && this.mdl_nombre != '' && this.mdl_apellido != '') {
-  //       if (!usuarioExistente && !correoExistente ||
-  //         this.lista_respuesta[x]["RESPUESTA"] == "OK") {
-  //         this.dbService.almacenarPersona(
-  //           this.mdl_nombre,
-  //           this.mdl_apellido,
-  //           this.mdl_usuario,
-  //           this.mdl_email,
-  //           this.mdl_contrasena
-
-  //         );
-
-
-  //         this.router.navigate(['login'], parametros);
-  //       // RESPUESTA DE DUPLICACION
-  //       } else {
-  //         if (this.lista_respuesta[x]["RESPUESTA"] == "ERR01" || usuarioExistente) {
-  //           this.isAlertOpenDuplicado = true;
-  //         } else if (this.lista_respuesta[x]["RESPUESTA"] == "ERR02" || correoExistente) {
-  //           this.isAlertOpenEmail= true;
-  //         }
-
-  //       }
-  //     // ALERTA CAMPOS VACIOS
-  //     } else {
-  //       this.isAlertOpen = true;
-  //     }
-  //   }
-  // }
 
   volver() {
     let parametros: NavigationExtras = {

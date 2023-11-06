@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Persona } from '../models/persona.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +12,15 @@ export class ApiService {
   constructor(private http: HttpClient  ) { }
 
 
-  apiPersonaAlmacenar (usuario: string, correo: string, contrasena: string, nombre: string, apellido: string) {
+  apiPersonaAlmacenar(persona: Persona) {
     return this.http.post(this.ruta, {
       nombreFuncion: 'UsuarioAlmacenar',
       parametros: [
-        usuario, correo, contrasena, nombre, apellido
+        persona.nombre, 
+        persona.apellido,
+        persona.usuario, 
+        persona.email, 
+        persona.contrasena
       ]
     }).pipe();
   }
@@ -26,7 +31,7 @@ export class ApiService {
       parametros: [
         usuario, contrasena
       ]
-    }).pipe();  
+    }).pipe();
   }
 
   apiPersonaModificarContrasena (usuario: string, contrasenaNueva: string, contrasenaActual: string) {
