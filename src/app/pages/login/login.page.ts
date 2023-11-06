@@ -18,8 +18,6 @@ export class LoginPage implements OnInit {
   //VARIABLES
   mdl_usuario: string = '';
   mdl_contra: string = '';
-  // usuarioRegistrado: string = '';
-  // contraRegistrada: string = '';
   mdl_message: string = '';
   usuario: string = '';
   contra: string = '';
@@ -28,13 +26,11 @@ export class LoginPage implements OnInit {
   // OBTENER LISTA DE MODELS
   lista_personas: Persona[] = [];
 
-
-  // RESPUESTA API
-  lista_respuesta: any[] = [];
   //Lista para saber si la sesion esta activa
-  lista_sesion: any[] = [];
-  lista_activa: Sesion[] = [];
-  vigente: string = '';
+  // lista_sesion: any[] = [];
+  // lista_activa: Sesion[] = [];
+  // vigente: string = '';
+
   // ALERTAS
   isAlertOpen = false;
   isAlertOpenError = false;
@@ -42,76 +38,44 @@ export class LoginPage implements OnInit {
 
 
   constructor(private router: Router, 
-              private dbService: DbService, 
+              private dbService: DbService,
               private sesionService: SesionService, 
               private apiService: ApiService) { }
 
   ngOnInit() {
-    // OBTIENES DATOS DE LA SESION 
-    this.sesionService.ObtenerSesion().then(data => {
-      for (let x = 0; x < data.length; x++) {
-        this.lista_sesion.push(data[x]);
-      }
-    });
   }
 
   async ingresar() {
     this.isAlertOpen = false;
     this.isAlertOpenError = false;
 
-    let data = this.apiService.apiPersonaLogin(this.mdl_usuario, this.mdl_contra);
-    let respuesta = await lastValueFrom(data);
+    if (this.mdl_usuario != '' && this.mdl_contra != '') {
+      let valApi = await this.validarUsuarioApi();
+      if(valApi){
 
+      }
+    }else {
+      this.isAlertOpen = true;
+    }
+  }
+
+  async validarUsuarioApi(){
+    let data = this.apiService.apiPersonaLogin(this.mdl_usuario, this.mdl_contra);
+    let respuesta = await lastValueFrom(data); 
     let json = JSON.stringify(respuesta);
     let jsonProcesado = JSON.parse(json);
 
-    for (let x = 0; x < jsonProcesado["result"].length; x++) {
-      this.lista_respuesta.push(jsonProcesado["result"][x]);
-
-      if (this.mdl_usuario != '' && this.mdl_contra != '') {
-        // SELECT A TABLA PERSONA
-        this.dbService.dbPersonaValidar(this.mdl_usuario).then(data => {
-
-          this.usuario = data[3];
-          this.contra = data[5];
-
-          if (this.mdl_usuario == this.usuario && this.mdl_contra == this.contra
-
-            || this.lista_respuesta[x]["RESPUESTA"] == "LOGIN OK") {
-
-            if (this.lista_sesion.includes(this.mdl_usuario)) {
-              let parametros: NavigationExtras = {
-                state: {
-                  user: this.mdl_usuario
-                },
-                replaceUrl: true
-              }
-              this.vigente = '1'
-              this.sesionService.sesionActual(this.vigente, this.mdl_usuario);
-              this.router.navigate(['principal'], parametros);
-            } else {
-              let parametros: NavigationExtras = {
-                state: {
-                  user: this.mdl_usuario
-                },
-                replaceUrl: true
-              }
-              this.vigente = '1'
-              this.sesionService.nuevaSesion(this.mdl_usuario, this.vigente);
-              console.log(this.mdl_usuario);
-              this.router.navigate(['principal'], parametros);
-            }
-          }else {
-            if (this.lista_respuesta[x]['RESPUESTA'] == "LOGIN NOK" ||
-              this.mdl_usuario != this.usuario && this.mdl_contra != this.contra) {
-              this.isAlertOpenError = true;
-            }
-          }
-        });
-      } else {
-        this.isAlertOpen = true;
-      }
+    if(jsonProcesado["result"][0]["RESPUESTA"] == "LOGIN OK"){
+      return true;
+    }else if(jsonProcesado["result"][0]["RESPUESTA"] == "LOGIN NOK"){
+      this.isAlertOpenError = true;
+      return false;
     }
+    return false;
+  }
+
+  validarUsuarioDb() {
+    let user = this.dbService.dbPersonaValidar(this.mdl_usuario);
   }
 
   registro() {

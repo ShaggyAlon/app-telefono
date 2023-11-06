@@ -90,14 +90,20 @@ export class DbService {
       .then((db: SQLiteObject) => {
         return db.executeSql('SELECT NOMBRE, APELLIDO, USUARIO, EMAIL, CONTRASENA FROM PERSONA WHERE USUARIO = ?', [usuario])
           .then((data) => {
-            let lista_validarU: Persona[] = [];
+            let lista_personas: Persona[] = [];
 
             for (let x = 0; x < data.rows.length; x++) {
-              lista_validarU.push(data.rows.item(x));
+              let item = data.rows.item(x);
+              let persona = new Persona(
+                item.NOMBRE,
+                item.APELLIDO,
+                item.USUARIO,
+                item.EMAIL,
+                item.CONTRASENA
+              );
+              lista_personas.push(persona);
             }
-
-            return [lista_validarU[0].nombre, lista_validarU[0].apellido, lista_validarU[0].usuario,
-            lista_validarU[0].email, lista_validarU[0].contrasena];
+            return lista_personas
 
           })
           .catch(e => {

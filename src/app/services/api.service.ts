@@ -16,11 +16,11 @@ export class ApiService {
     return this.http.post(this.ruta, {
       nombreFuncion: 'UsuarioAlmacenar',
       parametros: [
-        persona.nombre, 
-        persona.apellido,
         persona.usuario, 
-        persona.email, 
-        persona.contrasena
+        persona.email,
+        persona.contrasena, 
+        persona.nombre, 
+        persona.apellido
       ]
     }).pipe();
   }

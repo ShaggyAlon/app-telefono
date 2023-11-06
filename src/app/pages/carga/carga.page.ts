@@ -16,11 +16,12 @@ export class CargaPage implements OnInit {
   validador = false;
 
 
-  constructor(private sesionService:SesionService, private router: Router) { }
+  constructor(private sesionService:SesionService, 
+              private router: Router) { }
 
   ngOnInit() {
     setTimeout(() => {
-      this.sesionService.ObtenerSesion().then(data => {
+      this.sesionService.obtenerSesion().then(data => {
         for (let x = 0; x < data.length; x++) {
           this.lista_sesion.push(data[x]);
         }
@@ -31,7 +32,7 @@ export class CargaPage implements OnInit {
             this.usuario2 = this.lista_sesion[i].USUARIO;
           }
         }
-  
+
         if (this.validador) {
           let parametros: NavigationExtras = {
             state: {
@@ -41,12 +42,8 @@ export class CargaPage implements OnInit {
           }
           this.router.navigate(['principal'], parametros);
         } else {
-          
           this.router.navigate(['login']);
         }
-  
-  
-  
       });
     }, 1500);
   }

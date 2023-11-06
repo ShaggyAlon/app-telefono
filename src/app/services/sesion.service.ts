@@ -23,7 +23,7 @@ export class SesionService {
 
 
   // Obtendra sesion para validar si el usuario oprimiop logout
-  ObtenerSesion() {
+  obtenerSesion() {
     return this.sqlite.create({
       name: 'data.db',
       location: 'default'

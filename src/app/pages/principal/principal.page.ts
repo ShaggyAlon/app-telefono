@@ -14,8 +14,6 @@ export class PrincipalPage implements OnInit {
   //VARIABLES
   usuario: string = '';
   apellido: string = '';
-  nombre: string = '';
-  contra: string = '';
   color: string = 'light';
 
   lista_personas: Persona[] = [];
@@ -28,11 +26,7 @@ export class PrincipalPage implements OnInit {
     let parametros = this.router.getCurrentNavigation();
     if(parametros?.extras.state){
       this.usuario = parametros?.extras.state['user'];
-      this.apellido = parametros?.extras.state['apellido'];
     }
-    this.dbService.dbPersonaValidar(this.usuario).then(data => {
-      this.nombre = data[1]; 
-    });
   }
 
   logout(){

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { DbService } from 'src/app/services/db.service';
 import { lastValueFrom } from 'rxjs';
+import { NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'app-cambiar-contrasena',
@@ -72,5 +73,16 @@ export class CambiarContrasenaPage implements OnInit {
   cambiarContrasenaDb(usuario: string, new_contra: string) {
     let res = this.dbService.dbActualizarPersona(usuario, new_contra);
     return res;
+  }
+
+  volver(){
+    let paramatros : NavigationExtras = {
+      replaceUrl: true
+    }
+    this.router.navigate(['principal'], paramatros);
+  }
+
+  setOpen(isOpen: boolean) {
+    this.isAlertOpen = isOpen;
   }
 }

@@ -50,6 +50,7 @@ export class PersonaCrearPage implements OnInit {
   }
 
   async almacenarPersona(){
+    this.alertFalse();
     if (this.mdl_usuario != '' && this.mdl_email != '' && this.mdl_contrasena != '' && this.mdl_nombre != '' && this.mdl_apellido != '') {
 
       let persona = new Persona(this.mdl_nombre, this.mdl_apellido, this.mdl_usuario, this.mdl_email, this.mdl_contrasena);
@@ -92,6 +93,12 @@ export class PersonaCrearPage implements OnInit {
 
   setOpen(isOpen: boolean) {
     this.isAlertOpen = isOpen;
+  }
+
+  alertFalse(){
+    this.isAlertOpen = false;
+    this.isAlertOpenDuplicado = false;
+    this.isAlertOpenEmail = false;    
   }
 
 }
