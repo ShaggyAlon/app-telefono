@@ -17,9 +17,7 @@ export class PrincipalPage implements OnInit {
   color: string = 'light';
 
   lista_personas: Persona[] = [];
-  vigente: string = '';
-  constructor(private router: Router, 
-              private dbService: DbService, 
+  constructor(private router: Router,
               private sesionService:SesionService) {}
 
   ngOnInit() {
@@ -27,14 +25,14 @@ export class PrincipalPage implements OnInit {
     if(parametros?.extras.state){
       this.usuario = parametros?.extras.state['user'];
     }
+    this.cambiarEstadoSession('1');
   }
 
   logout(){
+    this.cambiarEstadoSession('0');
     let parametros: NavigationExtras = {
       replaceUrl: true
     }
-    this.vigente = '0'
-    this.sesionService.sesionActual(this.vigente,this.usuario)
     this.router.navigate(['login'], parametros)
   }
 
@@ -46,5 +44,10 @@ export class PrincipalPage implements OnInit {
     }
     this.router.navigate(['cambiar-contrasena'], parametros)
   }
+
+  cambiarEstadoSession(vigente:string){
+    this.sesionService.sesionActual(vigente,this.usuario)
+  }
+
 
 }

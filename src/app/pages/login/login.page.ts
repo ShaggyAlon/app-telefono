@@ -1,12 +1,9 @@
-import { state } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { Persona } from 'src/app/models/persona.model';
-import { Sesion } from 'src/app/models/sesion.model';
 import { ApiService } from 'src/app/services/api.service';
 import { DbService } from 'src/app/services/db.service';
-import { SesionService } from 'src/app/services/sesion.service';
 
 @Component({
   selector: 'app-login',
@@ -26,11 +23,6 @@ export class LoginPage implements OnInit {
   // OBTENER LISTA DE MODELS
   lista_personas: Persona[] = [];
 
-  //Lista para saber si la sesion esta activa
-  // lista_sesion: any[] = [];
-  // lista_activa: Sesion[] = [];
-  // vigente: string = '';
-
   // ALERTAS
   isAlertOpen = false;
   isAlertOpenError = false;
@@ -39,7 +31,6 @@ export class LoginPage implements OnInit {
 
   constructor(private router: Router, 
               private dbService: DbService,
-              private sesionService: SesionService, 
               private apiService: ApiService) { }
 
   ngOnInit() {
@@ -52,7 +43,13 @@ export class LoginPage implements OnInit {
     if (this.mdl_usuario != '' && this.mdl_contra != '') {
       let valApi = await this.validarUsuarioApi();
       if(valApi){
-
+        let valDb = this.validarUsuarioDb();
+        if(valDb){
+          let parametros: NavigationExtras = {
+            replaceUrl: true
+          }
+          this.router.navigate(['principal'], parametros);
+        }
       }
     }else {
       this.isAlertOpen = true;
@@ -61,7 +58,7 @@ export class LoginPage implements OnInit {
 
   async validarUsuarioApi(){
     let data = this.apiService.apiPersonaLogin(this.mdl_usuario, this.mdl_contra);
-    let respuesta = await lastValueFrom(data); 
+    let respuesta = await lastValueFrom(data);
     let json = JSON.stringify(respuesta);
     let jsonProcesado = JSON.parse(json);
 
@@ -75,7 +72,15 @@ export class LoginPage implements OnInit {
   }
 
   validarUsuarioDb() {
-    let user = this.dbService.dbPersonaValidar(this.mdl_usuario);
+    this.dbService.dbPersonaValidar(this.mdl_usuario).then((data) => {
+      this.lista_personas = data;
+      let usuarioEncontrado = this.lista_personas.find(usr => usr.usuario === this.mdl_usuario);
+      if (usuarioEncontrado)
+        return true;
+      else
+        return false;
+    });
+    return false;
   }
 
   registro() {
